@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "linden",
   "name": "Agent Toolkit",
   "colors": {
     "primary": "#16A34A",
@@ -61,12 +61,7 @@
           "anchor": "Documentation",
           "href": "https://mintlify.com/docs",
           "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
+        },       
         {
           "anchor": "Blog",
           "href": "https://mintlify.com/blog",
