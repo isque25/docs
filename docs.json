@@ -34,6 +34,10 @@
           }
         ]
       },
+        {
+        "tab": "API Reference OpenAPI",
+        "openapi": "https://api.agenttoolkit.ai/openapi.json"
+    },
       {
         "tab": "API Reference",
         "groups": [
