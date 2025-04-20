@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "linden",
+  "theme": "willow",
   "name": "Agent Toolkit",
   "colors": {
     "primary": "#16A34A",
@@ -35,42 +35,18 @@
         ]
       },
         {
-        "tab": "API Reference OpenAPI",
+        "tab": "API Reference",
         "openapi": "https://api.agenttoolkit.ai/openapi.json"
     },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
-      }
+
     ],
     "global": {
       "anchors": [
         {
           "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "href": "https://docs.agenttoolkit.ai",
           "icon": "book-open-cover"
-        },       
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
+        },               
       ]
     }
   },
