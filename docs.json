@@ -15,11 +15,7 @@
         "groups": [
           {
             "group": "Get Started",
-            "pages": [
-              "introduction",
-              "quickstart",
-              "development"
-            ]
+            "pages": ["introduction", "quickstart", "development"]
           },
           {
             "group": "Essentials",
@@ -34,11 +30,10 @@
           }
         ]
       },
-        {
+      {
         "tab": "API Reference",
         "openapi": "https://api.agenttoolkit.ai/openapi.json"
-    },
-
+      }
     ],
     "global": {
       "anchors": [
@@ -46,7 +41,7 @@
           "anchor": "Documentation",
           "href": "https://docs.agenttoolkit.ai",
           "icon": "book-open-cover"
-        },               
+        }
       ]
     }
   },
