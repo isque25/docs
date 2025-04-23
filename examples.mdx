@@ -1,0 +1,189 @@
+---
+title: "Code Examples"
+description: "Learn how to use the Agent Toolkit API with practical examples"
+---
+
+# Code Examples
+
+Explore these examples to learn how to integrate the Agent Toolkit API into your applications.
+
+## Basic Search and Extract Pipeline
+
+This example demonstrates how to search for information and extract content from the top result:
+
+```typescript
+import { client } from "@agent-toolkit/client-ts";
+import type { SearchResponse, ExtractResponse } from "@agent-toolkit/client-ts";
+
+// Set up the client
+client.setConfig({
+  baseUrl: "https://api.agenttoolkit.ai",
+  headers: {
+    "Content-Type": "application/json",
+    "X-API-Key": "YOUR_API_KEY",
+  },
+});
+
+async function searchAndExtract(query: string) {
+  try {
+    // 1. Perform a search
+    console.log(`Searching for '${query}'...`);
+    const searchResponse = await client.get<SearchResponse>({
+      url: "/api/v1/search",
+      query: {
+        query,
+        max_results: 3,
+        provider: "google",
+        summarize: true,
+      },
+    });
+
+    // 2. Process search results
+    if (!searchResponse.data?.results?.length) {
+      console.log("No search results found");
+      return null;
+    }
+
+    // 3. Extract content from the first result URL
+    const url = searchResponse.data.results[0].url;
+    console.log(`Extracting content from ${url}...`);
+
+    const extractResponse = await client.get<ExtractResponse>({
+      url: "/api/v1/extract",
+      query: {
+        url,
+        include_images: true,
+        include_links: true,
+        extract_depth: "advanced",
+      },
+    });
+
+    // 4. Return combined results
+    return {
+      searchResults: searchResponse.data,
+      extractedContent: extractResponse.data?.results?.[0] || null,
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
+
+// Usage
+const results = await searchAndExtract("typescript openapi client");
+```
+
+## Filtering Search Results
+
+This example shows how to filter search results by domains and date ranges:
+
+```typescript
+const response = await client.get<SearchResponse>({
+  url: "/api/v1/search",
+  query: {
+    query: "typescript best practices",
+    max_results: 10,
+    provider: "google",
+    // Only return results from these domains
+    include_domains: ["microsoft.com", "typescriptlang.org"],
+    // Only include results published in 2023
+    published_start_date: "2023-01-01",
+    published_end_date: "2023-12-31",
+  },
+});
+```
+
+## Batch Extract Multiple URLs
+
+Extract content from multiple URLs in a single request:
+
+```typescript
+const response = await client.post<ExtractResponse>({
+  url: "/api/v1/extract",
+  body: {
+    urls: [
+      "https://example.com/page1",
+      "https://example.com/page2",
+      "https://another-site.com/article",
+    ],
+    include_images: true,
+    include_links: true,
+    extract_depth: "advanced",
+  },
+});
+
+// Process successful extractions
+response.data.results?.forEach((result) => {
+  console.log(`Content from ${result.url}:`);
+  console.log(`Text length: ${result.raw_content.length} characters`);
+  console.log(`Images: ${result.images?.length || 0}`);
+  console.log(`Links: ${result.links?.length || 0}`);
+});
+
+// Check for failed extractions
+if (response.data.failed_results?.length) {
+  console.log("Failed extractions:");
+  response.data.failed_results.forEach((failed) => {
+    console.log(`${failed.url}: ${failed.error}`);
+  });
+}
+```
+
+## Error Handling with Type Safety
+
+This example demonstrates robust error handling with TypeScript:
+
+```typescript
+import { client } from "@agent-toolkit/client-ts";
+import type { SearchResponse } from "@agent-toolkit/client-ts";
+
+async function safeSearch(query: string) {
+  try {
+    const response = await client.get<SearchResponse>({
+      url: "/api/v1/search",
+      query: { query },
+    });
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    // Handle specific error types
+    if (error.status === 401) {
+      return {
+        success: false,
+        error: "Authentication failed. Please check your API key.",
+        code: "AUTH_ERROR",
+      };
+    } else if (error.status === 429) {
+      return {
+        success: false,
+        error: "Rate limit exceeded. Please try again later.",
+        code: "RATE_LIMIT",
+      };
+    } else {
+      return {
+        success: false,
+        error: error.message || "An unknown error occurred",
+        code: "UNKNOWN_ERROR",
+      };
+    }
+  }
+}
+
+// Usage with TypeScript type guards
+const result = await safeSearch("example query");
+
+if (result.success) {
+  // TypeScript knows this has data property
+  console.log(`Found ${result.data.results.length} results`);
+} else {
+  // TypeScript knows this has error property
+  console.error(`Error (${result.code}): ${result.error}`);
+}
+```
+
+## Next Steps
+
+Ready to build something amazing with the Agent Toolkit API? Check out our [API Reference](/api-reference/search) for complete documentation of all available endpoints.

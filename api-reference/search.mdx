@@ -1,0 +1,137 @@
+---
+title: "Search API"
+api: "GET /api/v1/search"
+description: "Search the web with multiple providers and get structured results"
+---
+
+The search endpoint returns formatted results from external search providers like Google, Bing, and DuckDuckGo.
+
+## Query Parameters
+
+<ParamField query="query" type="string" required>
+  The search query string
+</ParamField>
+
+<ParamField query="max_results" type="number" default="5">
+  Number of results to return (1-10)
+</ParamField>
+
+<ParamField query="provider" type="string" default="google">
+  Search provider to use (google, bing, duckduckgo)
+</ParamField>
+
+<ParamField query="summarize" type="boolean" default="false">
+  Generate an AI summary of the search results
+</ParamField>
+
+<ParamField query="language" type="string">
+  ISO language code (e.g., 'en', 'fr')
+</ParamField>
+
+<ParamField query="country" type="string">
+  Country code (e.g., 'us', 'gb')
+</ParamField>
+
+<ParamField query="topic" type="string">
+  Search topic category (general, news, images, videos, finance)
+</ParamField>
+
+<ParamField query="use_selenium" type="boolean" default="false">
+  Whether to enhance DuckDuckGo results with Selenium (only applies to
+  DuckDuckGo provider)
+</ParamField>
+
+<ParamField query="published_start_date" type="string">
+  Start date for published content (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query="published_end_date" type="string">
+  End date for published content (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query="include_domains" type="string[]">
+  Domains to include in search results
+</ParamField>
+
+<ParamField query="exclude_domains" type="string[]">
+  Domains to exclude from search results
+</ParamField>
+
+## Response
+
+<ResponseField name="query" type="string">
+  The search query that was processed
+</ResponseField>
+
+<ResponseField name="results" type="SearchResult[]">
+  List of search results
+  <Expandable title="SearchResult properties">
+    <ResponseField name="title" type="string">
+      The title of the search result
+    </ResponseField>
+
+    <ResponseField name="snippet" type="string">
+      A clean summary or snippet from the search result
+    </ResponseField>
+
+    <ResponseField name="url" type="string">
+      The URL of the search result
+    </ResponseField>
+
+    <ResponseField name="published_date" type="string">
+      Publication date of the result if available
+    </ResponseField>
+
+    <ResponseField name="domain" type="string">
+      Domain of the result URL
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="summary" type="string">
+  Optional LLM-generated summary of results (only if summarize=true)
+</ResponseField>
+
+<ResponseField name="result_count" type="number">
+  Number of results returned
+</ResponseField>
+
+## TypeScript Example
+
+```typescript
+import { client } from "@agent-toolkit/client-ts";
+import type { SearchResponse } from "@agent-toolkit/client-ts";
+
+// Configure the client
+client.setConfig({
+  baseUrl: "https://api.agenttoolkit.ai",
+  headers: {
+    "Content-Type": "application/json",
+    "X-API-Key": "your-api-key",
+  },
+});
+
+// Perform a search
+const response = await client.get<SearchResponse>({
+  url: "/api/v1/search",
+  query: {
+    query: "typescript openapi client",
+    max_results: 5,
+    provider: "google",
+    summarize: true,
+  },
+});
+
+// Display results
+console.log("Search Results:");
+response.data.results.forEach((result, i) => {
+  console.log(`\n${i + 1}. ${result.title}`);
+  console.log(`   URL: ${result.url}`);
+  console.log(`   ${result.snippet}`);
+});
+
+// Access the AI-generated summary
+if (response.data.summary) {
+  console.log(`\nSummary: ${response.data.summary}`);
+}
+```

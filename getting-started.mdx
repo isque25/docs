@@ -1,0 +1,237 @@
+---
+title: "Getting Started"
+description: "Start using the Agent Toolkit API in under 5 minutes"
+---
+
+## Overview
+
+Agent Toolkit provides powerful APIs for web search, content extraction, and more. This guide will help you integrate your application with our services using our official client libraries.
+
+<CardGroup cols={2}>
+  <Card title="TypeScript Client" icon="js" href="#typescript-client">
+    Start building with our TypeScript client
+  </Card>
+  <Card
+    title="Python Client"
+    icon="python"
+    href="#python-client"
+    color="#4B8BBE"
+  >
+    Coming soon
+  </Card>
+</CardGroup>
+
+## TypeScript Client
+
+The TypeScript client provides a type-safe way to interact with our API.
+
+### Installation
+
+<Tabs>
+  <Tab title="npm">```bash npm install @agent-toolkit/client-ts ```</Tab>
+  <Tab title="yarn">```bash yarn add @agent-toolkit/client-ts ```</Tab>
+  <Tab title="pnpm">```bash pnpm add @agent-toolkit/client-ts ```</Tab>
+</Tabs>
+
+### Quick Setup
+
+```typescript
+import { client } from "@agent-toolkit/client-ts";
+
+// Configure with your API key
+client.setConfig({
+  baseUrl: "https://api.agenttoolkit.ai",
+  headers: {
+    "Content-Type": "application/json",
+    "X-API-Key": "your-api-key-here", // Replace with your actual API key
+  },
+});
+```
+
+<Note>
+  To obtain an API key, [sign up](https://www.agenttoolkit.ai) for an account
+  and generate a key from the dashboard.
+</Note>
+
+### Example: Web Search
+
+Perform a web search and get structured results:
+
+```typescript
+// Import types if needed
+import type { SearchResponse } from "@agent-toolkit/client-ts";
+
+// Perform a web search
+const response = await client.get<SearchResponse>({
+  url: "/api/v1/search",
+  query: {
+    query: "typescript openapi client",
+    max_results: 5,
+    provider: "google",
+    summarize: true,
+  },
+});
+
+// Process results
+console.log("Search Results:");
+response.data.results.forEach((result, i) => {
+  console.log(`\n${i + 1}. ${result.title}`);
+  console.log(`   URL: ${result.url}`);
+  console.log(`   ${result.snippet}`);
+});
+
+// Access the AI-generated summary
+if (response.data.summary) {
+  console.log(`\nSummary: ${response.data.summary}`);
+}
+```
+
+<ParamField query="query" type="string" required>
+  The search query string
+</ParamField>
+
+<ParamField query="max_results" type="number" default="5">
+  Number of results to return (1-10)
+</ParamField>
+
+<ParamField query="provider" type="string" default="google">
+  Search provider to use (google, bing, duckduckgo)
+</ParamField>
+
+<ParamField query="summarize" type="boolean" default="false">
+  Generate an AI summary of the search results
+</ParamField>
+
+### Example: Content Extraction
+
+Extract content from a webpage:
+
+```typescript
+// Import types if needed
+import type { ExtractResponse } from "@agent-toolkit/client-ts";
+
+// Extract content from a website
+const response = await client.get<ExtractResponse>({
+  url: "/api/v1/extract",
+  query: {
+    url: "https://www.example.com",
+    include_images: true,
+    include_links: true,
+    extract_depth: "advanced",
+  },
+});
+
+// Display extracted content
+if (response.data?.results?.[0]) {
+  const result = response.data.results[0];
+  console.log("Extracted Content:", result.raw_content);
+  console.log("Images:", result.images?.length || 0);
+  console.log("Links:", result.links?.length || 0);
+}
+```
+
+<ParamField query="url" type="string" required>
+  URL to extract content from
+</ParamField>
+
+<ParamField query="include_images" type="boolean" default="false">
+  Include images in the response
+</ParamField>
+
+<ParamField query="include_links" type="boolean" default="false">
+  Include internal links found on the page
+</ParamField>
+
+<ParamField query="extract_depth" type="string" default="basic">
+  Depth of extraction ('basic' or 'advanced')
+</ParamField>
+
+### Chaining Operations
+
+A common use case is to search for information and then extract content from one of the results:
+
+```typescript
+// 1. Perform a search
+const searchResponse = await client.get<SearchResponse>({
+  url: "/api/v1/search",
+  query: {
+    query: "typescript openapi",
+    max_results: 3,
+    provider: "google",
+  },
+});
+
+// 2. Extract content from the first result URL
+if (searchResponse.data?.results?.[0]) {
+  const url = searchResponse.data.results[0].url;
+
+  const extractResponse = await client.get<ExtractResponse>({
+    url: "/api/v1/extract",
+    query: {
+      url,
+      include_images: true,
+      include_links: true,
+    },
+  });
+
+  // Process the extracted content
+  // ...
+}
+```
+
+### Using the CLI
+
+For testing purposes, you can use our command-line interface:
+
+```bash
+# Show available commands
+npm run start
+
+# Run a search
+npm run start -- search "typescript openapi client" --max=5 --provider=google --summarize=true
+
+# Extract content from a URL
+npm run start -- extract "https://www.example.com"
+
+# Check your API credit usage
+npm run start -- credits
+```
+
+## Python Client
+
+<Info>Our Python client is coming soon! Check back for updates.</Info>
+
+## Error Handling
+
+The client provides robust error handling capabilities:
+
+```typescript
+try {
+  const response = await client.get({
+    url: "/api/v1/search",
+    query: {
+      query: "example search",
+    },
+  });
+  // Process successful response
+} catch (error) {
+  if (error.status === 401) {
+    console.error("Authentication error. Please check your API key.");
+  } else if (error.status === 429) {
+    console.error("Rate limit exceeded. Please try again later.");
+  } else {
+    console.error("An error occurred:", error.message);
+  }
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="book" href="/api-reference/search">
+    Explore our API endpoints in detail
+  </Card>
+  <Card title="Examples" icon="code" href="/examples">
+    View more code examples
+  </Card>
+</CardGroup>{" "}
