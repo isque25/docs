@@ -27,9 +27,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://docs.agenttoolkit.ai",
-          "icon": "book-open-cover"
+          "anchor": "Dashboard",
+          "href": "https://www.agenttoolkit.ai",
+          "icon": "layout-dashboard"
         }
       ]
     }
