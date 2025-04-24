@@ -7,16 +7,16 @@ description: "Start using the Agent Toolkit API in under 5 minutes"
 
 Agent Toolkit provides powerful APIs for web search, content extraction, and more. This guide will help you integrate your application with our services using our official client libraries.
 
-<CardGroup cols={2}>
+<Note>
+  To obtain an API key, [sign up](https://www.agenttoolkit.ai) for an account
+  and generate a key from the dashboard.
+</Note>
+
+<CardGroup cols="2">
   <Card title="TypeScript Client" icon="js" href="#typescript-client">
     Start building with our TypeScript client
   </Card>
-  <Card
-    title="Python Client"
-    icon="python"
-    href="#python-client"
-    color="#4B8BBE"
-  >
+  <Card title="Python Client" icon="python" color="#4B8BBE" href="#python-client">
     Coming soon
   </Card>
 </CardGroup>
@@ -60,11 +60,6 @@ client.setConfig({
 });
 ```
 
-<Note>
-  To obtain an API key, [sign up](https://www.agenttoolkit.ai) for an account
-  and generate a key from the dashboard.
-</Note>
-
 ### Example: Web Search
 
 Perform a web search and get structured results:
@@ -102,15 +97,15 @@ if (response.data.summary) {
   The search query string
 </ParamField>
 
-<ParamField query="max_results" type="number" default="5">
+<ParamField query="max_results" default="5" type="number">
   Number of results to return (1-10)
 </ParamField>
 
-<ParamField query="provider" type="string" default="google">
+<ParamField query="provider" default="google" type="string">
   Search provider to use (google, bing, duckduckgo)
 </ParamField>
 
-<ParamField query="summarize" type="boolean" default="false">
+<ParamField query="summarize" default="false" type="boolean">
   Generate an AI summary of the search results
 </ParamField>
 
@@ -146,15 +141,15 @@ if (response.data?.results?.[0]) {
   URL to extract content from
 </ParamField>
 
-<ParamField query="include_images" type="boolean" default="false">
+<ParamField query="include_images" default="false" type="boolean">
   Include images in the response
 </ParamField>
 
-<ParamField query="include_links" type="boolean" default="false">
+<ParamField query="include_links" default="false" type="boolean">
   Include internal links found on the page
 </ParamField>
 
-<ParamField query="extract_depth" type="string" default="basic">
+<ParamField query="extract_depth" default="basic" type="string">
   Depth of extraction ('basic' or 'advanced')
 </ParamField>
 
@@ -211,7 +206,9 @@ npm run start -- credits
 
 ## Python Client
 
-<Info>Our Python client is coming soon! Check back for updates.</Info>
+<Info>
+  Our Python client is coming soon\! Check back for updates.
+</Info>
 
 ## Error Handling
 
@@ -239,7 +236,7 @@ try {
 
 ## Next Steps
 
-<CardGroup cols={2}>
+<CardGroup cols="2">
   <Card title="API Reference" icon="book" href="/api-reference/search">
     Explore our API endpoints in detail
   </Card>
