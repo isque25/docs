@@ -16,7 +16,12 @@ Agent Toolkit provides powerful APIs for web search, content extraction, and mor
   <Card title="TypeScript Client" icon="js" href="#typescript-client">
     Start building with our TypeScript client
   </Card>
-  <Card title="Python Client" icon="python" color="#4B8BBE" href="#python-client">
+  <Card
+    title="Python Client"
+    icon="python"
+    color="#4B8BBE"
+    href="#python-client"
+  >
     Coming soon
   </Card>
 </CardGroup>
@@ -28,27 +33,15 @@ The TypeScript client provides a type-safe way to interact with our API.
 ### Installation
 
 <Tabs>
-  <Tab title="npm">
-    ```bash
-    npm install @agent-toolkit/client-ts
-    ```
-  </Tab>
-  <Tab title="yarn">
-    ```bash
-    yarn add @agent-toolkit/client-ts
-    ```
-  </Tab>
-  <Tab title="pnpm">
-    ```bash
-    pnpm add @agent-toolkit/client-ts
-    ```
-  </Tab>
+  <Tab title="npm">```bash npm install @agenttoolkit/search ```</Tab>
+  <Tab title="yarn">```bash yarn add @agenttoolkit/search ```</Tab>
+  <Tab title="pnpm">```bash pnpm add @agenttoolkit/search ```</Tab>
 </Tabs>
 
 ### Quick Setup
 
 ```typescript
-import { client } from "@agent-toolkit/client-ts";
+import { client } from "@agenttoolkit/search";
 
 // Configure with your API key
 client.setConfig({
@@ -66,7 +59,7 @@ Perform a web search and get structured results:
 
 ```typescript
 // Import types if needed
-import type { SearchResponse } from "@agent-toolkit/client-ts";
+import type { SearchResponse } from "@agenttoolkit/search";
 
 // Perform a web search
 const response = await client.get<SearchResponse>({
@@ -115,7 +108,7 @@ Extract content from a webpage:
 
 ```typescript
 // Import types if needed
-import type { ExtractResponse } from "@agent-toolkit/client-ts";
+import type { ExtractResponse } from "@agenttoolkit/search";
 
 // Extract content from a website
 const response = await client.get<ExtractResponse>({
@@ -206,33 +199,7 @@ npm run start -- credits
 
 ## Python Client
 
-<Info>
-  Our Python client is coming soon\! Check back for updates.
-</Info>
-
-## Error Handling
-
-The client provides robust error handling capabilities:
-
-```typescript
-try {
-  const response = await client.get({
-    url: "/api/v1/search",
-    query: {
-      query: "example search",
-    },
-  });
-  // Process successful response
-} catch (error) {
-  if (error.status === 401) {
-    console.error("Authentication error. Please check your API key.");
-  } else if (error.status === 429) {
-    console.error("Rate limit exceeded. Please try again later.");
-  } else {
-    console.error("An error occurred:", error.message);
-  }
-}
-```
+<Info>Our Python client is coming soon\! Check back for updates.</Info>
 
 ## Next Steps
 
